@@ -37,7 +37,16 @@
             <p>Aliases: {{$superhero->aliases}}</p>
             <p>Weight: {{$superhero->weight}} kg.</p>
             <p>Height: {{$height}}</p>
+            <p>Alignment: {{ucfirst($superhero->alignment->name)}}</p>
+            @if ($superhero->user_created == 1)
+                <form method="post" action="{{ route('superhero.destroy', $superhero->id) }}">
+                    {{ csrf_field() }}
+                    {{ method_field('DELETE') }}
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </form>
+            @endif
         </div>
         </div>
+
     </div>
 @endsection

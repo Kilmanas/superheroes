@@ -2,25 +2,30 @@
 
 @section('content')
     <div class="container">
-        <div class="col-md-3">
-            <form method="get" action="{{route('superhero.index')}}">
-                <select name="powerstat" class="form-control" id="powerstat">
-                    <option value="">Sort</option>
-                    <option value="Intelligence,asc">Intelligence↑</option>
-                    <option value="Intelligence,desc">Intelligence↓</option>
-                    <option value="Strength,asc">Strength↑</option>
-                    <option value="Strength,desc">Strength↓</option>
-                    <option value="Speed,asc">Speed↑</option>
-                    <option value="Speed,desc">Speed↓</option>
-                    <option value="Durability,asc">Durability↑</option>
-                    <option value="Durability,desc">Durability↓</option>
-                    <option value="Power,asc">Power↑</option>
-                    <option value="Power,desc">Power↓</option>
-                    <option value="Combat,asc">Combat↑</option>
-                    <option value="Combat,desc">Combat↓</option>
-                </select>
-                <input type="submit" value="Sort" class="btn-light">
-            </form>
+        <div class="row-cols-2">
+            <div class="d-inline-flex p-2">
+                <form method="get" action="{{route('superhero.index')}}">
+                    <select name="powerstat" class="form-control" id="powerstat">
+                        <option value="">Sort</option>
+                        <option value="Intelligence,asc">Intelligence↑</option>
+                        <option value="Intelligence,desc">Intelligence↓</option>
+                        <option value="Strength,asc">Strength↑</option>
+                        <option value="Strength,desc">Strength↓</option>
+                        <option value="Speed,asc">Speed↑</option>
+                        <option value="Speed,desc">Speed↓</option>
+                        <option value="Durability,asc">Durability↑</option>
+                        <option value="Durability,desc">Durability↓</option>
+                        <option value="Power,asc">Power↑</option>
+                        <option value="Power,desc">Power↓</option>
+                        <option value="Combat,asc">Combat↑</option>
+                        <option value="Combat,desc">Combat↓</option>
+                    </select>
+                    <input type="submit" value="Sort" class="btn-light">
+                </form>
+            </div>
+            <div class="col d-inline-flex p-2">
+
+            </div>
         </div>
         <div class="row">
             @foreach($superheroes as $superhero)
@@ -30,13 +35,13 @@
 
                         <div class="card-body">
                             <div class="d-flex flex-nowrap">
-                            <div class="col p-2 m-0">
-                                <img class="img" src="{{$superhero->image_sm_url}}">
-                            </div>
-                            <div class="col p-2 m-0">
-                            <p>{{ucfirst($powerstat)}}: {{$superhero->$powerstat}}</p>
-                            <p>{{strtoupper($superhero->alignment->name)}}</p>
-                            </div>
+                                <div class="col p-2 m-0">
+                                    <img class="img" src="{{$superhero->image_sm_url}}">
+                                </div>
+                                <div class="col p-2 m-0">
+                                    <p>{{ucfirst($powerstat)}}: {{$superhero->$powerstat}}</p>
+                                    <p>{{strtoupper($superhero->alignment->name)}}</p>
+                                </div>
                             </div>
                         </div>
                         <div class="card-footer">
@@ -49,4 +54,5 @@
             @endforeach
         </div>
     </div>
+    {!! $superheroes->links() !!}
 @endsection

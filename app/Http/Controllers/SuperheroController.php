@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alignment;
+use App\Models\Powerstat;
 use App\Models\Superhero;
 use App\Http\Requests\StoreSuperheroRequest;
 use App\Http\Requests\UpdateSuperheroRequest;
 use App\Services\Height;
+use Intervention\Image\ImageManagerStatic as Image;
+
 
 class SuperheroController extends Controller
 {
@@ -28,9 +32,13 @@ class SuperheroController extends Controller
             $sort = 'desc';
         }
         if($sort == 'asc'){
-            $data['superheroes'] = Superhero::all()->sortBy($powerstat);
+            $data['superheroes'] = Superhero::orderBy($powerstat, 'asc')->paginate(10);
         } else {
-            $data['superheroes'] = Superhero::all()->sortByDesc($powerstat);
+            $data['superheroes'] = Superhero::orderBy($powerstat, 'desc')->paginate(10);
+        }
+        if (isset($_GET['search'])){
+            $search = $_GET['search'];
+            $data['superheroes'] = Superhero::where('name', 'like' , "%$search%")->paginate(10);
         }
 
         return view('superheroes.list', $data) -> with('powerstat', $powerstat);
@@ -43,7 +51,8 @@ class SuperheroController extends Controller
      */
     public function create()
     {
-        //
+        $data['alignments'] = Alignment::all();
+        return view('superheroes.create', $data);
     }
 
     /**
@@ -54,6 +63,12 @@ class SuperheroController extends Controller
      */
     public function store(StoreSuperheroRequest $request)
     {
+        $extension = '.png';
+        $filename = $request->post('name').$extension;
+        $smPath = 'images/sm'."/".$filename;
+        Image::make($request->file('image'))->resize(160, 240)->save($smPath);
+        $lgPath = 'images/lg'."/".$filename;
+        Image::make($request->file('image'))->resize(480, 640)->save($lgPath);
         $superhero = Superhero::create([
             'name' => $request->post('name'),
             'intelligence' => $request->post('intelligence'),
@@ -64,10 +79,12 @@ class SuperheroController extends Controller
             'combat' => $request->post('combat'),
             'height' => $request->post('height'),
             'weight' => $request->post('weight'),
-            'image_url' => $image,
-            'alignment_id' => $alignment,
+            'image_sm_url' => $smPath,
+            'image_lg_url' => $lgPath,
+            'alignment_id' => $request->post('alignment'),
             'aliases' => $request->post('aliases'),
             ]);
+        return redirect(route('superhero.show', $superhero->id));
     }
 
     /**
@@ -114,6 +131,15 @@ class SuperheroController extends Controller
      */
     public function destroy(Superhero $superhero)
     {
-        //
+        $superhero->delete();
+        return redirect(route('superhero.index'));
+    }
+
+    public function search()
+    {
+        if (isset($_GET['search'])){
+            $search = $_GET['search'];
+            $data['superheroes'] = Superhero::where('name', 'like' , "%$search%")->paginate(10);
+        }
     }
 }

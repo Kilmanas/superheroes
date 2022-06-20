@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect(route('superhero.index'));
 });
 Route::resource('superhero', SuperheroController::class);
+Route::get('superhero/?search=', [SuperheroController::class, 'search'])->name('superhero.search');
