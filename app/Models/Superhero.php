@@ -31,8 +31,8 @@ class Superhero extends Model
         return $this->hasOne(Alignment::class, 'id', 'alignment_id');
     }
 
-    public function powerstats()
+    public function image()
     {
-        return $this->hasMany(Powerstat::class, 'id');
+        return $this->hasOne(Image::class, 'id', 'image_id');
     }
 }

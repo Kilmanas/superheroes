@@ -38,7 +38,7 @@
                         <div class="card-body">
                             <div class="d-flex flex-nowrap">
                                 <div class="col p-2 m-0">
-                                    <img class="img" src="{{asset($superhero->image_sm_url)}}">
+                                    <img class="img" src="{{asset($superhero->image->sm_img_url)}}">
                                 </div>
                                 <div class="col p-2 m-0">
                                     <p>{{ucfirst($powerstat)}}: {{$superhero->$powerstat}}</p>

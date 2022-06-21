@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreSuperheroRequest;
 use App\Http\Requests\UpdateSuperheroRequest;
 use App\Models\Alignment;
+use App\Models\Image as ImageModel;
 use App\Models\Superhero;
 use App\Services\Height;
 use App\Services\Pagination;
@@ -63,23 +64,26 @@ class SuperheroController extends Controller
         Image::make($request->file('image'))->resize(160, 240)->save($smPath, 90, 'png');
         $lgPath = 'images/lg' . "/" . $filename;
         Image::make($request->file('image'))->resize(480, 640)->save($lgPath, 90, 'png');
-        $superhero = Superhero::create([
-            'user_created' => 1,
-            'name' => $request->post('name'),
-            'intelligence' => $request->post('intelligence'),
-            'strength' => $request->post('strength'),
-            'speed' => $request->post('speed'),
-            'durability' => $request->post('durability'),
-            'power' => $request->post('power'),
-            'combat' => $request->post('combat'),
-            'height' => $request->post('height'),
-            'weight' => $request->post('weight'),
-            'image_sm_url' => $smPath,
-            'image_lg_url' => $lgPath,
-            'alignment_id' => $request->post('alignment'),
-            'aliases' => $request->post('aliases'),
+        $image = new ImageModel();
+        $image->sm_img_url = $smPath;
+        $image->lg_img_url = $lgPath;
+        $image->save();
+        $superhero = new Superhero();
+        $superhero->user_created = 1;
+        $superhero->name = $request->post('name');
+        $superhero->intelligence = $request->post('intelligence');
+        $superhero->strength = $request->post('strength');
+        $superhero->speed = $request->post('speed');
+        $superhero->durability = $request->post('durability');
+        $superhero->power = $request->post('power');
+        $superhero->combat = $request->post('combat');
+        $superhero->height = $request->post('height');
+        $superhero->weight = $request->post('weight');
+        $superhero->image_id = $image->id;
+        $superhero->alignment_id = $request->post('alignment');
+        $superhero->aliases = $request->post('aliases');
+        $superhero->save();
 
-        ]);
         return redirect(route('superhero.show', $superhero->id));
     }
 
