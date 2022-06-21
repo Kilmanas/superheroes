@@ -25,16 +25,15 @@ class StoreSuperheroRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:superheroes|max:255',
-            'intelligence' => 'required|numeric|min:1|max:110',
-            'strength' => 'required|numeric|min:1|max:110',
-            'speed' => 'required|numeric|min:1|max:110',
-            'durability' => 'required|numeric|min:1|max:110',
-            'power' => 'required|numeric|min:1|max:110',
-            'combat' => 'required|numeric|min:1|max:110',
+            'intelligence' => 'required|integer|min:1|max:110',
+            'strength' => 'required|integer|min:1|max:110',
+            'speed' => 'required|integer|min:1|max:110',
+            'durability' => 'required|integer|min:1|max:110',
+            'power' => 'required|integer|min:1|max:110',
+            'combat' => 'required|integer|min:1|max:110',
             'height' => 'required|numeric',
             'weight' => 'required|numeric',
-            'image' => 'required|image|mimes:png|max:2048|dimensions:min_width=1000,min_height=1000,max_width=1000,max_height=1000',
-            'alignment_id' => 'required|max:1',
+            'image' => 'required|image|mimes:png|dimensions:min_width=1000,min_height=1000,max_width=1000,max_height=1000',
             'aliases' => 'required|max:255',
         ];
     }

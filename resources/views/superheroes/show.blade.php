@@ -2,9 +2,12 @@
 
 @section('content')
     <div class="container">
+        <div class="col-3">
+            <a href="{{ url()->previous() }}" class="btn btn-primary">Back</a>
+        </div>
         <div class="row justify-content-evenly">
         <div class="col-6">
-            <img src="{{$superhero->image_lg_url}}">
+            <img src="{{asset($superhero->image_lg_url)}}">
         </div>
         <div class="col-6">
             <h2 class="text-center">{{$superhero->name}}</h2>

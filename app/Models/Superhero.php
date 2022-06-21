@@ -22,6 +22,7 @@ class Superhero extends Model
         'image_lg_url',
         'alignment_id',
         'aliases',
+        'user_created'
     ];
     public $timestamps = false;
 
